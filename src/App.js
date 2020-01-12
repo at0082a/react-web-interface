@@ -1,23 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import AddAppointment from './components/addAppointment';
+import ListAppointment from './components/listAppointment'
+import SearchAppointment from './components/searchAppointment' 
 import './App.css';
 
-function App() {
-  return (
-    <main className="page bg-blue" id="petratings">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 bg-blue">
-              <div className="container">
-                <div>Add Appointments</div>
-                <div>Search Appointments</div>
-                <div>List Appointments</div>
+class App extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      myAppointments : []
+    };
+  }
+
+  componentDidMount () {
+    fetch("./data.json")
+    .then(response => response.json())
+    .then(items => {
+      this.setState({myAppointments: items});
+    });
+  }
+ 
+  render () {
+    console.log(this.state.myAppointments);
+    return (
+      <main className="page bg-white" id="petratings">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12 bg-white">
+                <div className="container">
+                  <AddAppointment/>
+                  <SearchAppointment/>
+                  <ListAppointment/>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
-  );
+        </main>
+    );
+  }
 }
 
 export default App;
