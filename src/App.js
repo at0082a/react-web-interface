@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       myAppointments : []
     };
+    this.deleteAppointment = this.deleteAppointment.bind(this);
   }
 
   componentDidMount () {
@@ -19,24 +20,31 @@ class App extends Component {
       this.setState({myAppointments: items});
     });
   }
+
+  deleteAppointment(apt) {
+    console.log(apt);
+    let appts = this.state.myAppointments;
+    let updatedAppts = appts.filter((item, index) => index !== apt);
+    this.setState({myAppointments: updatedAppts});
+  }
  
   render () {
     let appointments = this.state.myAppointments;
 
     return (
       <main className="page bg-white" id="petratings">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 bg-white">
-                <div className="container">
-                  <AddAppointment/>
-                  <SearchAppointment/>
-                  <ListAppointment appointments={appointments}/>
-                </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 bg-white">
+              <div className="container">
+                <AddAppointment/>
+                <SearchAppointment/>
+                <ListAppointment appointments={appointments} deleteAppointment={this.deleteAppointment}/>
               </div>
             </div>
           </div>
-        </main>
+        </div>
+      </main>
     );
   }
 }
