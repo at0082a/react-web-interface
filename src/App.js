@@ -21,7 +21,8 @@ class App extends Component {
   }
  
   render () {
-    console.log(this.state.myAppointments);
+    let appointments = this.state.myAppointments;
+
     return (
       <main className="page bg-white" id="petratings">
           <div className="container">
@@ -30,7 +31,7 @@ class App extends Component {
                 <div className="container">
                   <AddAppointment/>
                   <SearchAppointment/>
-                  <ListAppointment/>
+                  <ListAppointment appointments={appointments}/>
                 </div>
               </div>
             </div>
