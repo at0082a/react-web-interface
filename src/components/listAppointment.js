@@ -13,17 +13,16 @@ export default class ListAppointment extends Component {
   render() {
     return (
       <div className="appointment-list item-list mb-3">
-        
-      {this.props.appointments.map((item, i) => {
+        {this.props.appointments.map((item, i) => {
           return (
-        <div key={i} onClick={(e) => {this.props.deleteAppointment(i)}} className="pet-item col media py-3">
-          <div className="mr-3">
-              <button className="pet-delete btn btn-sm btn-danger" >
+          <div key={i} className="pet-item col media py-3">
+            <div className="mr-3">
+              <button className="pet-delete btn btn-sm btn-danger" onClick={(e) => {this.props.deleteAppointment(i)}} >
                 <FaTimes/>
               </button>
-          </div>
+            </div>
 
-          <div className="pet-info media-body">
+            <div className="pet-info media-body">
               <div className="pet-head d-flex">
                 <span className="pet-name">{item.petName}</span>
                 <span className="apt-date ml-auto">
@@ -37,12 +36,14 @@ export default class ListAppointment extends Component {
                   <span className="label-item">Owner: </span>
                   <span>{item.ownerName}</span>
               </div>
-            <div className="apt-notes">{item.aptNotes}</div>
+              <div className="apt-notes">
+                {item.aptNotes}
+              </div>
+            </div>
           </div>
+            )
+        })} 
         </div>
-          )
-      })} 
-      </div>
-    )
+      )
   }
 }
