@@ -5,7 +5,43 @@ export default class AddAppointment extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      petName: '',
+      ownerName: '',
+      aptDate: '',
+      aptTime: '',
+      aptNotes: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    const value = event.target.value;
+    console.log(value);
+    const field = event.target.name;
+    this.setState({ [field]: value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault(); 
+    const newApt = {
+      petName: this.state.petName,
+      ownerName: this.state.ownerName,
+      aptDate: this.state.aptDate + " " + this.state.aptTime,
+      aptNotes: this.state.aptNotes
+    };
+
+    this.props.addAppointment(newApt);
+
+    this.setState({
+      petName: '',
+      ownerName: '', 
+      aptDate: '',
+      aptTime: '',
+      aptNotes: ''
+    });
+    
   }
 
   render() {
@@ -13,15 +49,13 @@ export default class AddAppointment extends Component {
       <div className={
         "card textcenter mt-3 " +
         (this.props.formDisplay ? "" : "add-appointment")
-      }
-      onClick={this.props.toggleForm}
-      >
-          <div className="apt-addheading card-header bg-primary text-white" >
+      }>
+          <div className="apt-addheading card-header bg-primary text-white" onClick={this.props.toggleForm} >
             <FaPlus/> Add Appointment
           </div>
 
-          <div className="card-body">
-            <form id="aptForm" noValidate>
+          <div className="card-body" >
+            <form id="aptForm" noValidate onSubmit={this.handleSubmit}>
               <div className="form-group form-row">
                 <label
                   className="col-md-2 col-form-label text-md-right"
@@ -36,6 +70,8 @@ export default class AddAppointment extends Component {
                     className="form-control"
                     name="petName"
                     placeholder="Pet's Name"
+                    onChange={this.handleChange}
+                    value={this.state.petName}
                   />
                 </div>
               </div>
@@ -51,7 +87,9 @@ export default class AddAppointment extends Component {
                     type="text"
                     className="form-control"
                     name="ownerName"
-                    placeholder="Owner's Name"
+                    placeholder="Owner's Name"  
+                    onChange={this.handleChange}
+                    value={this.state.petOwner}
                   />
                 </div>
               </div>
@@ -69,11 +107,15 @@ export default class AddAppointment extends Component {
                     className="form-control"
                     name="aptDate"
                     id="aptDate"
+                    onChange={this.handleChange}
+                    value={this.state.aptDate}
                   />
                 </div>
                 <label
                   className="col-md-2 col-form-label text-md-right"
                   htmlFor="aptTime"
+                  onChange={this.handleChange}
+                  value={this.state.aptTime}
                 >
                   Time
                 </label>
@@ -83,6 +125,8 @@ export default class AddAppointment extends Component {
                     className="form-control"
                     name="aptTime"
                     id="aptTime"
+                    value={this.state.date}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -99,6 +143,8 @@ export default class AddAppointment extends Component {
                     name="aptNotes"
                     id="aptNotes"
                     placeholder="Appointment Notes"
+                    value={this.state.aptNotes}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
