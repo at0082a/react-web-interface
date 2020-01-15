@@ -10,12 +10,15 @@ class App extends Component {
     this.state = {
       myAppointments : [],
       formDisplay: false,
-      orderBy: 'ownerName',
+      orderBy: 'petName',
+      searchText: '',
       orderDirection: 'asc'
     };
     this.deleteAppointment = this.deleteAppointment.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
+    this.changeOrder = this.changeOrder.bind(this);
+    this.textChange = this.textChange.bind(this);
   }
 
   componentDidMount () {
@@ -24,6 +27,14 @@ class App extends Component {
     .then(items => {
       this.setState({myAppointments: items});
     });
+  }
+
+  changeOrder(item, order) {
+    this.setState({orderBy: item, orderDirection: order });
+  }
+
+  textChange(event) {
+    this.setState({searchText: event});
   }
 
   handleClick(event) {
@@ -45,7 +56,6 @@ class App extends Component {
  
   render () {
     let order;
-
     if (this.state.orderDirection === 'asc') {
       order = 1;
     } else {
@@ -53,12 +63,18 @@ class App extends Component {
     }
 
     let appointments = this.state.myAppointments;
-    appointments.sort((a,b) => {
+    appointments = appointments.sort((a,b) => {
       if (a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()) {
         return -1 * order;
       } else {
         return 1 * order;
       }
+    }).filter(item => {
+      return(
+        item['petName'].includes(this.state.queryText) ||
+        item['ownerName'].includes(this.state.queryText) ||
+        item['aptName'].includes(this.state.queryText)
+      );
     });
     return (
       <main className="page bg-white" id="petratings">
@@ -67,7 +83,7 @@ class App extends Component {
             <div className="col-md-12 bg-white">
               <div className="container">
                 <AddAppointment formDisplay={this.state.formDisplay} toggleForm={this.handleClick} addAppointment={this.addAppointment}/>
-                <SearchAppointment/>
+                <SearchAppointment orderBy={this.state.orderBy} orderDirection={this.state.orderDirection} changeOrder={this.changeOrder} searchText={this.textChange}/>
                 <ListAppointment appointments={appointments} deleteAppointment={this.deleteAppointment} />
               </div>
             </div>
